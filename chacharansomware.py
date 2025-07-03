@@ -38,12 +38,15 @@ for num in range(0,10):
     try:
         target_file = target_dir+file_list[num]
         f = open(target_file)
+        print(target_file)
         encrypted_text = f.read().encode()
+        f.close()
         decrypted_text = cipher.decrypt(encrypted_text)
         decrypted_text = decrypted_text.decode()
-
+        print(decrypted_text)
         afw = open(target_file,'w')
         afw.write(decrypted_text)
+        afw.close()
     except IndexError:
         break
 os.system('pause')
