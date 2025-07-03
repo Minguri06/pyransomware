@@ -4,26 +4,46 @@ from cryptography.fernet import Fernet
 
 key = Fernet.generate_key()
 cipher = Fernet(key)
-f = open("test.txt")
-txt = f.read()
-byte = txt.encode()
-f.close()
+target_dir = "testme/" 
+file_list = os.listdir(target_dir)
+print(file_list)
 
-fw = open("test.txt",'w')
-encrypted_text = cipher.encrypt(byte)
-notbyte = encrypted_text.decode()
-fw.write(notbyte)
-fw.close()
-print("encrypted:", notbyte)
+for num in range(0,10):
+    try:
+        target_file = target_dir+file_list[num]
+    
+        print(target_file)
+        f = open(target_file)
+        txt = f.read()
+        byte = txt.encode()
+        f.close()
+
+        fw = open(target_file,'w')
+        encrypted_text = cipher.encrypt(byte)
+        notbyte = encrypted_text.decode()
+        fw.write(notbyte)
+        fw.close()
+    except IndexError:
+        break
+
+print("encrypted")
+
 while True:
     password = str(input("Enter the password: "))
     if password == "1234":
         break
     else:
         print("wrong")
-decrypted_text = cipher.decrypt(encrypted_text)
-decrypted_text = decrypted_text.decode()
-print("decrypted:",decrypted_text)
-afw = open("test.txt",'w')
-afw.write(decrypted_text)
+for num in range(0,10):
+    try:
+        target_file = target_dir+file_list[num]
+        f = open(target_file)
+        encrypted_text = f.read().encode()
+        decrypted_text = cipher.decrypt(encrypted_text)
+        decrypted_text = decrypted_text.decode()
+
+        afw = open(target_file,'w')
+        afw.write(decrypted_text)
+    except IndexError:
+        break
 os.system('pause')
